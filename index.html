@@ -1596,7 +1596,7 @@
         
         const size = Math.floor(Math.random() * 18) + 12; // Tamaño entre 12px y 30px
         const leftPos = Math.random() * 100; // Posición horizontal aleatoria
-        const duration = Math.random() * 5 + 6; // Duración de caída 6s - 11s
+        const duration = Math.random() * 3 + 3.2; // Caída más rápida (de 3.2s a 6.2s)
         const opacity = (Math.random() * 0.35 + 0.25).toFixed(2); // Transparencia delicada
         
         heart.style.left = leftPos + '%';
@@ -1618,13 +1618,13 @@
         }, duration * 1000);
       }
 
-      // Lluvia inicial
-      for(let i = 0; i < 12; i++) {
-        setTimeout(createFallingHeart, i * 350);
+      // Lluvia inicial más densa
+      for(let i = 0; i < 25; i++) {
+        setTimeout(createFallingHeart, i * 150);
       }
       
-      // Lluvia constante de corazones
-      setInterval(createFallingHeart, 550);
+      // Frecuencia aumentada (un corazón nuevo cada 220ms)
+      setInterval(createFallingHeart, 220);
     });
   </script>
 </body>
