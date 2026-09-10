@@ -87,6 +87,45 @@
       100% { opacity: 1; transform: scale(1.25) rotate(15deg); }
     }
 
+    .falling-hearts-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .f-heart {
+      position: absolute;
+      top: -40px;
+      animation: fallAndSway linear infinite;
+      filter: drop-shadow(0 2px 6px rgba(255, 182, 213, 0.25));
+      pointer-events: none;
+    }
+
+    @keyframes fallAndSway {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg) scale(0.8);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.75;
+      }
+      50% {
+        transform: translateY(50vh) translateX(22px) rotate(180deg) scale(1.05);
+      }
+      85% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(105vh) translateX(-18px) rotate(360deg) scale(1.2);
+        opacity: 0;
+      }
+    }
+
     #nav {
       position: relative;
       width: 480px;
@@ -912,6 +951,8 @@
     <div class="sparkle sp-4">
       <svg viewBox="0 0 40 40" width="100%" height="100%"><polygon points="20,0 24,16 40,20 24,24 20,40 16,24 0,20 16,16" fill="#fff" opacity="0.95"/></svg>
     </div>
+
+    <div class="falling-hearts-layer" id="falling-hearts"></div>
   </div>
 
   <div id="nav">
@@ -1545,6 +1586,45 @@
 
       // Load initial track
       loadTrack(0);
+
+      function createFallingHeart() {
+        const heartContainer = document.getElementById('falling-hearts');
+        if (!heartContainer) return;
+
+        const heart = document.createElement('div');
+        heart.className = 'f-heart';
+        
+        const size = Math.floor(Math.random() * 18) + 12; // Tamaño entre 12px y 30px
+        const leftPos = Math.random() * 100; // Posición horizontal aleatoria
+        const duration = Math.random() * 5 + 6; // Duración de caída 6s - 11s
+        const opacity = (Math.random() * 0.35 + 0.25).toFixed(2); // Transparencia delicada
+        
+        heart.style.left = leftPos + '%';
+        heart.style.width = size + 'px';
+        heart.style.height = size + 'px';
+        heart.style.animationDuration = duration + 's';
+        
+        heart.innerHTML = `<svg viewBox="0 0 24 24" width="100%" height="100%">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
+          fill="rgba(255, 255, 255, ${opacity})" 
+          stroke="rgba(244, 143, 177, 0.45)" 
+          stroke-width="1.2"/>
+        </svg>`;
+
+        heartContainer.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, duration * 1000);
+      }
+
+      // Lluvia inicial
+      for(let i = 0; i < 12; i++) {
+        setTimeout(createFallingHeart, i * 350);
+      }
+      
+      // Lluvia constante de corazones
+      setInterval(createFallingHeart, 550);
     });
   </script>
 </body>
